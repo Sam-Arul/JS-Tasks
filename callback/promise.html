@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let contries = fetch("https://restcountries.eu/rest/v2/all")
+            .then((data) => {
+                return data.json();
+            })
+            //console.log(contries)
+            
+            .then((data) => {
+                for (let i in data) {
+                    let capital = data[i].capital;
+                    
+                    if (capital != "") {
+                        let apikey = "546e73e14f387c8e62dc39f105cb4468";
+                        let temperature = fetch("http://api.openweathermap.org/data/2.5/weather?q=" + capital + "&units=metric&appid=" + apikey)
+                            
+                        .then((data) => {
+                                return data.json();
+                            })
+                            
+                            .then((result) => {
+                                let flag = data[i].flag;
+                                //document.getElementById("flag").src = flag;
+                                let img = document.createElement('img');
+                                document.body.appendChild(img);
+                                img.src = data[i].flag;
+                                img.style.width = "150px";
+                                img.style.height = "150px";
+                                let h = document.createElement('h1');
+                                document.body.appendChild(h);
+                                h.innerHTML = capital;
+                                let temp = result.main.temp;
+                                let h1 = document.createElement('h1');
+                                document.body.appendChild(h1);
+                                h1.innerHTML = temp + " C";
+                                //document.getElementById("temp").innerHTML = temp;
+                            })
+                    }
+                }
+            })
+    </script>
+</body>
+
+</html>
